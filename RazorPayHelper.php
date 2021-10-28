@@ -75,9 +75,14 @@ class RazorPayHelper
             $paymentDetails=$this->apiClient->payment->fetch($paymentId);
 
             $paymentStatus=$paymentDetails->status;
-            $orderId=$paymentDetails
+            $orderId=$paymentDetails->order_id;
 
-            return $paymentDetails;
+            if($paymentStatus=='authorized'||$paymentStatus=='captured'){
+                return ['success'=>true,'transaction_id'=>$orderId];
+            }
+            else{
+                return ['success'=>false];
+            }
 
         }
         catch(Exception $e){
